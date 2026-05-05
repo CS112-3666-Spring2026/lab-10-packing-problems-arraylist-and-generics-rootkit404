@@ -1,4 +1,7 @@
-public class Inventory {
+import java.util.List;
+import java.util.NoSuchElementException;
+
+public class Inventory<T extends Supplies> {
 
 	/*     STEP 3 
 	*        
@@ -8,6 +11,29 @@ public class Inventory {
 	*
 	*      Go to Transfer.java for STEP 4
 	*/
+
+	// INSTANCE VARIABLES
+	private T genericVariable;
+
+	// Default Constructor
+	public Inventory() {
+
+	}
+
+	// Full Constructor
+	public Inventory(T genericVariable) {
+		this.genericVariable = genericVariable;
+	}
+
+	// SETTER & GETTER
+
+	public void setObject(T genericVariable) {
+		this.genericVariable = genericVariable;
+	}
+
+	public T getObject() {
+		return this.genericVariable;
+	}
 
 	/*     STEP 5
 	*
@@ -20,6 +46,22 @@ public class Inventory {
 	*      input String "name", use the indexOf() method to return the 
 	*      index. If no match is found, return -1. 
 	*/
+	public int searchByName(List<T> inputList, String name) throws NoSuchElementException {
+		name = name.trim();
+
+		for (T element : inputList) 
+		{
+			if (element.getName().equalsIgnoreCase(name)) {
+				return inputList.indexOf(element);
+			} else {
+				throw new NoSuchElementException("Sorry! Item \"" + name + "\" not found!");
+			}
+		}
+
+		// System.out.println("Sorry! Item \"" + name + "\" not found!");
+
+		return -1;
+	}
 
 
 	/*     STEP 7:
@@ -43,5 +85,21 @@ public class Inventory {
 	*      match the quantity in the list, then update using .setQuantity
 	*      and return the object with the new quantity.
 	*/
+	public T checkQty(List<T> inputList, String name, int desiredQty) throws NoSuchElementException {
+		int indexOfItem = searchByName(inputList, name);
+
+		if (indexOfItem == -1) 
+		{
+			throw new NoSuchElementException("Sorry! Item \"" + name + "\" not found!");
+		}
+
+		if (inputList.get(indexOfItem).getQuantity() != desiredQty) 
+		{
+			inputList.get(indexOfItem).setQuantity(desiredQty);
+			return inputList.get(indexOfItem);
+		} else {
+			return inputList.get(indexOfItem);
+		}
+	}
 
 }
